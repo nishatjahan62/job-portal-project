@@ -1,16 +1,70 @@
-import React from "react";
-import { Link } from "react-router";
+import React, { use, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import AuthContext from "../../Provider/AuthContext";
+import Swal from "sweetalert2";
+import toast from "react-hot-toast";
 
 const Register = () => {
-    const handleRegister=(e)=>{
-e.preventDefault()
-const form = e.target;
- const name = form.name.value;
+  const { createUser,setUser,updateUser } = use(AuthContext);
+   const navigate = useNavigate()
+
+  // Validation
+  const [nameError, setNameError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
     const photo = form.photo.value;
     const password = form.password.value;
     const email = form.email.value;
-console.log(email,password,name);
+   
+
+    // Name Validation
+    if (name.length < 5) {
+      setNameError("Name must be at least  5 character");
+      return;
+    } else {
+      setNameError("");
     }
+
+    // password validation
+    const upperCase = /[A-Z]/;
+    const lowerCase = /[a-z]/;
+
+    if (password.length < 6) {
+      setPasswordError("password  must be at least 6 character");
+      return;
+    } else if (!upperCase.test(password)) {
+      setPasswordError("PassWord must contain at Least one Uppercase letter");
+      return;
+    } else if (!lowerCase.test(password)) {
+      setPasswordError("PassWord must contain at Least one lowercase letter");
+      return;
+    } else {
+      setPasswordError("");
+    }
+    createUser(email, password)
+      .then((result) => {
+        const user=(result.user);
+        updateUser({displayName: name, photoURL: photo})
+        .then(()=>{
+            setUser({...user,displayName: name, photoURL: photo})
+            navigate("/")
+            
+        })
+        Swal.fire({
+          title: "Registered!",
+          text: "You successfully registered in your account",
+          icon: "success",
+        });
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
   return (
     <div className="flex justify-center items-center min-h-screen font-[quickSand]  ">
       <div className="card bg-base-100 items-center max-w-sm shrink-0 shadow-2xl mt-30 lg:px-5">
@@ -29,7 +83,7 @@ console.log(email,password,name);
               placeholder="Name"
               required
             />
-
+            {nameError && <p className="text-error">{nameError}</p>}
             {/* Photo URL */}
             <label className="label focus:border-amber-300">PHoto URL</label>
             <input
@@ -59,7 +113,7 @@ console.log(email,password,name);
               placeholder="Password"
               required
             />
-
+            {passwordError && <p className="text-error">{passwordError}</p>}
             <div>
               <a className="link link-hover">Forgot password?</a>
             </div>
