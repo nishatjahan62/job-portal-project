@@ -32,27 +32,13 @@ logOut().then(()=>{
           Home
         </NavLink>
         <NavLink
-          to={"/"}
+          to={"/applications"}
           className={({ isActive }) =>
             isActive ? "border-b-2 border-green-600 font-semibold text-lg" : ""
           }
-        ></NavLink>
-        <NavLink
-          to={"/"}
-          className={({ isActive }) =>
-            isActive ? "border-b-2 border-green-600 font-semibold text-lg" : ""
-          }
-        >
-          All apps
-        </NavLink>
-        <NavLink
-          to={"/"}
-          className={({ isActive }) =>
-            isActive ? "border-b-2 border-green-600 font-semibold text-lg" : ""
-          }
-        >
-          About
-        </NavLink>
+        >My Applications</NavLink>
+       
+       
       </ul>
     </>
   );

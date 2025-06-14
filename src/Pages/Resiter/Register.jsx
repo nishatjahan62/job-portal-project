@@ -1,12 +1,14 @@
 import React, { use, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../../Provider/AuthContext";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 
 const Register = () => {
-  const { createUser,setUser,updateUser } = use(AuthContext);
-   const navigate = useNavigate()
+  const { createUser, setUser, updateUser } = use(AuthContext);
+const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state || "/";
 
   // Validation
   const [nameError, setNameError] = useState("");
@@ -19,7 +21,6 @@ const Register = () => {
     const photo = form.photo.value;
     const password = form.password.value;
     const email = form.email.value;
-   
 
     // Name Validation
     if (name.length < 5) {
@@ -47,17 +48,16 @@ const Register = () => {
     }
     createUser(email, password)
       .then((result) => {
-        const user=(result.user);
-        updateUser({displayName: name, photoURL: photo})
-        .then(()=>{
-            setUser({...user,displayName: name, photoURL: photo})
-            navigate("/")
-            
-        })
-        Swal.fire({
-          title: "Registered!",
-          text: "You successfully registered in your account",
-          icon: "success",
+        const user = result.user;
+         navigate(from);
+        updateUser({ displayName: name, photoURL: photo }).then(() => {
+          setUser({ ...user, displayName: name, photoURL: photo });
+      
+          Swal.fire({
+            title: "Registered!",
+            text: "You successfully registered in your account",
+            icon: "success",
+          });
         });
       })
       .catch((error) => {
