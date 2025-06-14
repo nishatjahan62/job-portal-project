@@ -9,10 +9,13 @@ import toast from "react-hot-toast";
 const Login = () => {
   const { logIn, SignInWithGoogle } = use(AuthContext);
   const [error, setError] = useState();
-  // using UseRef for forget password
-  const emailRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+  const from = location.state || "/";
+
+  // using UseRef for forget password
+  const emailRef = useRef();
+
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -22,7 +25,7 @@ const Login = () => {
     logIn(email, password)
       .then((result) => {
         result.user;
-        navigate(`${location.state ? location.state : "/"}`);
+        navigate(from);
         Swal.fire({
           title: "Welcome Back!",
           text: "You have successfully logged in. ",
@@ -55,7 +58,7 @@ const Login = () => {
     SignInWithGoogle()
       .then((result) => {
         console.log(result.user);
-        navigate(`${location.state ? location.state : "/"}`);
+        navigate(from);
         Swal.fire({
           title: "Welcome Back!",
           text: "You have successfully logged in. ",

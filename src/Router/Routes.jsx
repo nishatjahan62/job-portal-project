@@ -7,6 +7,9 @@ import ErrorLayout from "../Layouts/ErrorLayout";
 import Register from "../Pages/Resiter/Register";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/login/Login";
+import JobDetails from "../Pages/jobDetails/JobDetails";
+import PrivateRoute from "../Provider/PrivateRoute";
+import JobApply from "../Pages/JobApply/JobApply";
 
 export const router = createBrowserRouter([
   {
@@ -21,25 +24,16 @@ export const router = createBrowserRouter([
         hydrateFallbackElement: <Loading></Loading>,
       },
       {
-        path: "",
-        element: <></>,
+        path: "/jobs/:id",
+        element: <JobDetails></JobDetails>,
+        loader:({params})=>fetch(`http://localhost:3000/jobs/${params.id}`)
       },
       {
-        path: "",
-        element: <></>,
-      },
-      {
-        path: "",
-        element: <></>,
-      },
-      {
-        path: "",
-        element: <></>,
-      },
-      {
-        path: "",
-        element: <></>,
-      },
+        path:"/jobApply/:id",
+        element:<PrivateRoute>
+          <JobApply></JobApply>
+        </PrivateRoute>
+      }
     ],
   },
    {
