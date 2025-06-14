@@ -38,7 +38,18 @@ logOut().then(()=>{
           }
         >My Applications</NavLink>
        
-       
+        <NavLink
+          to={"/addJobs"}
+          className={({ isActive }) =>
+            isActive ? "border-b-2 border-green-600 font-semibold text-lg" : ""
+          }
+        >Add Jobs</NavLink>
+         <NavLink
+          to={"/myAddedJobs"}
+          className={({ isActive }) =>
+            isActive ? "border-b-2 border-green-600 font-semibold text-lg" : ""
+          }
+        >My Added Jobs</NavLink>
       </ul>
     </>
   );

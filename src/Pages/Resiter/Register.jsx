@@ -1,14 +1,12 @@
 import React, { use, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import AuthContext from "../../Provider/AuthContext";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 
 const Register = () => {
   const { createUser, setUser, updateUser } = use(AuthContext);
-const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state || "/";
 
   // Validation
   const [nameError, setNameError] = useState("");
@@ -46,23 +44,32 @@ const location = useLocation();
     } else {
       setPasswordError("");
     }
+
     createUser(email, password)
       .then((result) => {
         const user = result.user;
-         navigate(from);
-        updateUser({ displayName: name, photoURL: photo }).then(() => {
-          setUser({ ...user, displayName: name, photoURL: photo });
-      
-          Swal.fire({
-            title: "Registered!",
-            text: "You successfully registered in your account",
-            icon: "success",
+        updateUser({ displayName: name, photoURL: photo })
+          .then(() => {
+            setUser({ ...user, displayName: name, photoURL: photo });
+             Swal.fire({
+              title: "Created Account",
+              text: "Your account has been registered successfully. ",
+              icon: "success",
+              draggable: true,
+              confirmButtonText: "OK",
+            }).then(()=>{ navigate("/")})
+           ;
+           
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            toast.error(errorMessage);
+            setUser(user);
           });
-        });
       })
       .catch((error) => {
         const errorMessage = error.message;
-        toast.error(errorMessage);
+        toast.error(errorMessage, {});
       });
   };
   return (
