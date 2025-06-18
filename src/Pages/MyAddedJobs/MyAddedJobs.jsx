@@ -7,7 +7,7 @@ const MyAddedJobs = () => {
   const { user } = AuthHook();
 
   return (
-    <div className="min-h-screen pt-20 mx-5 lg:mx-20">
+    <div className="min-h-screen flex flex-col justify-center items-center ">
       <Suspense fallback={"application is loading"}>
         <MyAddedJobList
           JobAddedByPromise={JobAddedByPromise(user.email)}

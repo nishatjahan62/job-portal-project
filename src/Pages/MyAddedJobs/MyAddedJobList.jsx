@@ -1,4 +1,5 @@
 import React, { use } from "react";
+import { Link } from "react-router";
 
 const MyAddedJobList = ({ JobAddedByPromise }) => {
   const jobs = use(JobAddedByPromise);
@@ -12,24 +13,24 @@ const MyAddedJobList = ({ JobAddedByPromise }) => {
             <tr>
               <th>#</th>
               <th>job</th>
-              <th>company</th>
-              <th>deadline</th>
+              <th>Deadline</th>
+              <th>Applicants</th>
             </tr>
           </thead>
           <tbody>
            {
             jobs.map((job,index)=><tr>
               <th>{index+1}</th>
-              <td> {job.title} </td>
-              <td>{job.company}</td>
+              <td> {job.title} <br />{job.company} </td>
               <td>{job.deadline}</td>
+              <td><Link to={`/applications/${job._id}`}>view applications</Link></td>
             </tr>)
            }
             
           </tbody>
         </table>
       </div>
-    </div>
+    </div> 
   );
 };
 

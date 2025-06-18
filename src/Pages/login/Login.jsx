@@ -124,6 +124,7 @@ const Login = () => {
                   className="input focus:border-amber-300"
                   placeholder="Email"
                   required
+                  ref={emailRef}
                 />
 
                 {/* password */}

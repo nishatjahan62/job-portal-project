@@ -25,6 +25,8 @@ const AddJobs = () => {
       .map((res) => res.trim());
     console.log(Object.keys(restJob).length);
 
+    restJob.status="active"
+
     // add new job in database
     axios
       .post("http://localhost:3000/jobs", restJob)
